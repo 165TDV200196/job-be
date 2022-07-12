@@ -1,5 +1,6 @@
 var Work = require('../models').Work;
 var Company = require('../models').Company;
+var Tag = require('../models').Tag;
 var TypeOfWork = require('../models').TypeOfWork;
 var TagWork = require('../models').TagWork;
 var WorkTypeOfWork = require('../models').WorkTypeOfWork;
@@ -21,10 +22,11 @@ exports.create = (req, res) => {
 };
 exports.findall = (req, res) => {
   var page = req.query.page;
-  console.log('req.query', req.query);
   var status = req.query.status;
   var name = req.query.name;
   var pageSize = req.query.pageSize;
+  var typeWordId = req.query.typeWordId || '';
+  console.log('typeWordId', typeWordId);
   let PA_SI = parseInt(pageSize) || PAGE_SIZE;
 
   page = parseInt(page);
@@ -62,6 +64,7 @@ exports.findall = (req, res) => {
           where: { status: status },
           order: [['id', 'DESC']],
           include: [Company],
+          subQuery: false,
         })
           .then((data) => {
             res.json({ data: data });
@@ -74,14 +77,21 @@ exports.findall = (req, res) => {
           where: { status: status },
           order: [['id', 'DESC']],
           offset: soLuongBoQua,
+          include: [
+            Company,
+            {
+              model: TypeOfWork,
+              where: { id: { [Op.like]: `%${typeWordId}%` } },
+            },
+          ],
           limit: PA_SI,
-          include: [Company],
+          subQuery: false,
         })
           .then((data) => {
             res.json({ data: data });
           })
           .catch((er) => {
-            throw er;
+            res.json({ data: er });
           });
       }
     } else {
@@ -99,7 +109,9 @@ exports.search = (req, res) => {
   var address = req.query.address || '';
   var status = req.query.status || '';
   var name = req.query.name || '';
+  var typeWordId = req.query.typeWordId || '';
   var nature = req.query.nature === '0' ? '' : req.query.nature;
+  console.log('ddddddddddddddddtypeWordId', typeWordId);
   Work.findAndCountAll({
     where: {
       nature: { [Op.like]: `%${nature}%` },
@@ -117,13 +129,16 @@ exports.search = (req, res) => {
       'price2',
       'dealtime',
     ],
-    include: [{ model: Company, attributes: ['name', 'id', 'avatar'] }],
+    include: [
+      { model: Company, attributes: ['name', 'id', 'avatar'] },
+      { model: TypeOfWork, where: { id: { [Op.like]: `%${typeWordId}%` } } },
+    ],
   })
     .then((data) => {
       res.json({ data: data });
     })
     .catch((er) => {
-      throw er;
+      res.json({ data: er });
     });
 };
 exports.findAllId = (req, res) => {

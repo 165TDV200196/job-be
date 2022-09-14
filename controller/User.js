@@ -35,6 +35,7 @@ exports.create = (req, res) => {
       throw er;
     });
 };
+
 exports.findall = (req, res) => {
   var page1 = req.query.page;
   var status = req.query.status;
@@ -94,6 +95,7 @@ exports.findall = (req, res) => {
       });
   }
 };
+
 exports.findone = (req, res) => {
   User.findOne({
     where: { id: req.params.id },
@@ -135,6 +137,7 @@ exports.findSaveWork = (req, res) => {
       throw er;
     });
 };
+
 exports.delete = (req, res) => {
   User.destroy({ where: { id: req.params.id } })
     .then((data) => {
@@ -144,6 +147,7 @@ exports.delete = (req, res) => {
       throw er;
     });
 };
+
 exports.update = (req, res) => {
   User.update(req.body, { where: { id: req.params.id } })
     .then((data) => {

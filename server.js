@@ -11,6 +11,7 @@ app.get('/', (req, res) => {
 });
 require('./routes/loginCompany')(app);
 require('./routes/loginUser')(app);
+require('./routes/LoginAdmin')(app);
 require('./routes/Tag')(app);
 require('./routes/Statistical')(app);
 require('./routes/SendMail')(app);

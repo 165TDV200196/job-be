@@ -111,7 +111,6 @@ exports.search = (req, res) => {
   var name = req.query.name || '';
   var typeWordId = req.query.typeWordId || '';
   var nature = req.query.nature === '0' ? '' : req.query.nature;
-  console.log('ddddddddddddddddtypeWordId', typeWordId);
   Work.findAndCountAll({
     where: {
       nature: { [Op.like]: `%${nature}%` },
@@ -141,10 +140,10 @@ exports.search = (req, res) => {
       res.json({ data: er });
     });
 };
+
 exports.findAllId = (req, res) => {
   var page = req.query.page;
   var companyId = req.query.id;
-
   if (page) {
     page = parseInt(page);
     let soLuongBoQua = (page - 1) * PAGE_SIZE;
@@ -153,6 +152,7 @@ exports.findAllId = (req, res) => {
       limit: PAGE_SIZE,
       include: [Company],
       where: { companyId: companyId, status: 1 },
+      order: [['id', 'ASC']],
     })
       .then((data) => {
         res.json({ data: data });
@@ -173,6 +173,7 @@ exports.findAllId = (req, res) => {
       });
   }
 };
+
 exports.findone = (req, res) => {
   Work.findOne({
     where: { id: req.params.id },
@@ -185,6 +186,7 @@ exports.findone = (req, res) => {
       throw er;
     });
 };
+
 exports.delete = (req, res) => {
   Work.destroy({ where: { id: req.params.id } })
     .then((data) => {
@@ -194,6 +196,7 @@ exports.delete = (req, res) => {
       throw er;
     });
 };
+
 exports.update = (req, res) => {
   Work.update(req.body, {
     where: { id: req.params.id },

@@ -4,6 +4,7 @@ module.exports = app => {
 
     router.post("/", Work.create);
     router.get('/', Work.findall);
+    router.get('/censorship', Work.findAllForCensorship);
     router.get('/:id', Work.findone);
     router.delete('/:id', Work.delete);
     router.patch('/:id', Work.update);

@@ -76,6 +76,7 @@ exports.findall = (req, res) => {
                         throw er;
                     });
             } else {
+                console.log("mmmmmmmmmmmmmmmmmm");
                 Work.findAndCountAll({
                     where: { status: status, censorship: 1 },
                     order: [['id', 'DESC']],
@@ -84,7 +85,7 @@ exports.findall = (req, res) => {
                         Company,
                         {
                             model: TypeOfWork,
-                            where: { id: { [Op.like]: `%${typeWordId}%` } },
+                            // where: { id: { [Op.like]: `%${typeWordId}%` } },
                         },
                     ],
                     limit: PA_SI,

@@ -7,7 +7,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.get('/', (req, res) => {
-  res.send('<h1>Chào tất cả các bạn đến với api jobIt!</h1>');
+    res.send('<h1>Chào tất cả các bạn đến với api jobIt!</h1>');
 });
 require('./routes/loginCompany')(app);
 require('./routes/loginUser')(app);
@@ -22,7 +22,6 @@ require('./routes/User')(app);
 require('./routes/Role')(app);
 require('./routes/Contact')(app);
 require('./routes/TypeOfWork')(app);
-require('./routes/New')(app);
 require('./routes/SocialNetwork')(app);
 require('./routes/Candidate')(app);
 require('./routes/Recruiment')(app);
@@ -47,9 +46,9 @@ require('./routes/SearchWork')(app);
 require('./routes/UserRole')(app);
 
 app.use(function (err, req, res, next) {
-  res.status(500).send(err);
+    res.status(500).send(err);
 });
 
 app.listen(process.env.PORT || 777, () => {
-  console.log('Chào mừng bạn đến với Backend');
+    console.log('Chào mừng bạn đến với Backend');
 });

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 exports.send = (req, res) => {
-    const { email, textSendMail, sechedule } = req.body;
+    const { email, textSendMail } = req.body;
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -17,7 +17,7 @@ exports.send = (req, res) => {
             to: email, // list of receivers
             subject: 'Web Việc làm', // Subject line
             text: textSendMail, // plain text body
-            html: `<b>${textSendMail}</b><br/><b>Lịch phỏng vấn của bạn vào ngày: ${sechedule}</b>`, // html body
+            html: `<b>${textSendMail}</b>`, // html body
         },
         (err) => {
             if (err) {

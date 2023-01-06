@@ -144,6 +144,7 @@ exports.search = (req, res) => {
             address: { [Op.like]: `%${address}%` },
             name: { [Op.like]: `%${name}%` },
             status: status,
+            censorship: 1
         },
         order: [['id', 'DESC']],
         attributes: [
@@ -178,7 +179,7 @@ exports.findAllId = (req, res) => {
             offset: soLuongBoQua,
             limit: PAGE_SIZE,
             include: [Company],
-            where: { companyId: companyId, status: 1 },
+            where: { companyId: companyId, status: 1, censorship: 1 },
             order: [['id', 'ASC']],
         })
             .then((data) => {
@@ -190,7 +191,7 @@ exports.findAllId = (req, res) => {
     } else {
         Work.findAndCountAll({
             include: [Company],
-            where: { companyId: companyId, status: 1 },
+            where: { companyId: companyId, status: 1, censorship: 1 },
         })
             .then((data) => {
                 res.json({ data: data });

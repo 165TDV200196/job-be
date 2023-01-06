@@ -19,13 +19,11 @@ require('./routes/Company')(app);
 require('./routes/CheckCompany')(app);
 require('./routes/Work')(app);
 require('./routes/User')(app);
-require('./routes/Role')(app);
 require('./routes/Contact')(app);
 require('./routes/TypeOfWork')(app);
 require('./routes/SocialNetwork')(app);
 require('./routes/Candidate')(app);
 require('./routes/Recruiment')(app);
-require('./routes/TagNew')(app);
 require('./routes/TagWork')(app);
 require('./routes/worktypeofwork')(app);
 require('./routes/UserTag')(app);
@@ -43,7 +41,6 @@ require('./routes/FormCV')(app);
 require('./routes/TagFormCV')(app);
 require('./routes/GetCategoriHome')(app);
 require('./routes/SearchWork')(app);
-require('./routes/UserRole')(app);
 
 app.use(function (err, req, res, next) {
     res.status(500).send(err);

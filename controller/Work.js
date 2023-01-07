@@ -202,6 +202,39 @@ exports.findAllId = (req, res) => {
     }
 };
 
+exports.findAllRejectId = (req, res) => {
+    var page = req.query.page;
+    var companyId = req.query.id;
+    if (page) {
+        page = parseInt(page);
+        let soLuongBoQua = (page - 1) * PAGE_SIZE;
+        Work.findAndCountAll({
+            offset: soLuongBoQua,
+            limit: PAGE_SIZE,
+            include: [Company],
+            where: { companyId: companyId, status: 1, censorship: 0 },
+            order: [['id', 'ASC']],
+        })
+            .then((data) => {
+                res.json({ data: data });
+            })
+            .catch((er) => {
+                throw er;
+            });
+    } else {
+        Work.findAndCountAll({
+            include: [Company],
+            where: { companyId: companyId, status: 1, censorship: 0 },
+        })
+            .then((data) => {
+                res.json({ data: data });
+            })
+            .catch((er) => {
+                throw er;
+            });
+    }
+};
+
 exports.findone = (req, res) => {
     Work.findOne({
         where: { id: req.params.id },

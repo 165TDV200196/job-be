@@ -41,6 +41,7 @@ require('./routes/FormCV')(app);
 require('./routes/TagFormCV')(app);
 require('./routes/GetCategoriHome')(app);
 require('./routes/SearchWork')(app);
+require('./routes/ChangePassword')(app);
 
 app.use(function (err, req, res, next) {
     res.status(500).send(err);

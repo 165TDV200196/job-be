@@ -3,6 +3,7 @@ module.exports = app => {
     var router = require('express').Router();
 
     router.get('/', Work.findAllId);
+    router.get('/reject', Work.findAllRejectId);
 
     app.use("/workId", router);
 }

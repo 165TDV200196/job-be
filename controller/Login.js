@@ -1,7 +1,7 @@
 require('dotenv').config();
 const Company = require('../models').Company;
 const User = require('../models').User;
-const UserAdmin = require('../models').UserAdmin;
+const Admin = require('../models').Admin;
 const jwt = require('jsonwebtoken');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -95,7 +95,7 @@ exports.loginUser = (req, res) => {
 exports.loginAdmin = (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    UserAdmin.findAll({
+    Admin.findAll({
         where: { email: email, password: password },
     })
         .then((data) => {

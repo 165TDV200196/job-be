@@ -1,9 +1,7 @@
 var Work = require('../models').Work;
 var Company = require('../models').Company;
-var Tag = require('../models').Tag;
+var WorkApply = require('../models').WorkApply;
 var TypeOfWork = require('../models').TypeOfWork;
-var TagWork = require('../models').TagWork;
-var WorkTypeOfWork = require('../models').WorkTypeOfWork;
 require('dotenv').config();
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -12,7 +10,7 @@ let PAGE_SIZE = parseInt(process.env.PAGE_SIZE);
 
 exports.create = (req, res) => {
     Work.create(req.body, {
-        include: ['tagWork', 'workType'],
+        include: ['workType'],
     })
         .then((data) => {
             res.json({ data: data });
@@ -76,7 +74,6 @@ exports.findall = (req, res) => {
                         throw er;
                     });
             } else {
-                console.log("mmmmmmmmmmmmmmmmmm");
                 Work.findAndCountAll({
                     where: { status: status, censorship: 1 },
                     order: [['id', 'DESC']],
@@ -238,7 +235,11 @@ exports.findAllRejectId = (req, res) => {
 exports.findone = (req, res) => {
     Work.findOne({
         where: { id: req.params.id },
-        include: [Company, TypeOfWork, 'tagWork'],
+        include: [Company, TypeOfWork,
+            {
+                model: WorkApply,
+            }
+        ],
     })
         .then((data) => {
             res.json({ data: data });
@@ -261,7 +262,7 @@ exports.delete = (req, res) => {
 exports.update = (req, res) => {
     Work.update(req.body, {
         where: { id: req.params.id },
-        include: ['tagWork', 'workType'],
+        include: ['workType'],
     })
         .then((data) => {
             res.json({ data: data });

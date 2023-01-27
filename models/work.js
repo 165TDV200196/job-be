@@ -16,13 +16,9 @@ module.exports = (sequelize, DataTypes) => {
                     through: 'WorkApplies',
                     as: 'workapply2',
                 }),
-                Work.belongsToMany(models.Tag, {
-                    through: 'TagWorks',
-                }),
                 Work.belongsToMany(models.TypeOfWork, {
                     through: 'WorkTypeOfWorks',
                 }),
-                Work.hasMany(models.TagWork, { foreignKey: 'workId', as: 'tagWork' }),
                 Work.hasMany(models.WorkApply, { foreignKey: 'workId' }),
                 Work.hasMany(models.WorkTypeOfWork, {
                     foreignKey: 'workId',

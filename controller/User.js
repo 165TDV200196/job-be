@@ -1,8 +1,6 @@
 var User = require('../models').User;
 var Company = require('../models').Company;
 var Work = require('../models').Work;
-var TypeOfWork = require('../models').TypeOfWork;
-var Tag = require('../models').Tag;
 require('dotenv').config();
 let PAGE_SIZE = parseInt(process.env.PAGE_SIZE);
 exports.create = (req, res) => {
@@ -43,7 +41,6 @@ exports.findall = (req, res) => {
                 distinct: true,
                 offset: soLuongBoQua,
                 limit: PAGE_SIZE,
-                include: [{ model: TypeOfWork }, { model: Tag }],
             })
                 .then((data) => {
                     res.json({ data: data });
@@ -55,7 +52,6 @@ exports.findall = (req, res) => {
             User.findAndCountAll({
                 distinct: true,
                 where: { status: status },
-                include: [{ model: TypeOfWork }, { model: Tag }],
             })
                 .then((data) => {
                     res.json({ data: data });
@@ -69,7 +65,6 @@ exports.findall = (req, res) => {
                 where: { status: status },
                 offset: soLuongBoQua,
                 limit: PAGE_SIZE,
-                include: [{ model: TypeOfWork }, { model: Tag }],
             })
                 .then((data) => {
                     res.json({ data: data });
@@ -81,7 +76,6 @@ exports.findall = (req, res) => {
     } else {
         User.findAndCountAll({
             distinct: true,
-            include: [{ model: TypeOfWork }, { model: Tag }],
         })
             .then((data) => {
                 res.json({ data: data });
@@ -95,7 +89,6 @@ exports.findall = (req, res) => {
 exports.findone = (req, res) => {
     User.findOne({
         where: { id: req.params.id },
-        include: [{ model: TypeOfWork }, { model: Tag }],
     })
         .then((data) => {
             res.json({ data: data });
@@ -109,8 +102,7 @@ exports.findSaveWork = (req, res) => {
     User.findOne({
         where: { id: req.params.id },
         include: [
-            { model: TypeOfWork },
-            { model: Tag },
+            // { model: TypeOfWork },
             {
                 model: Work,
                 attributes: [

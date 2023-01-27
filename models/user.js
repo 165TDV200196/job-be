@@ -24,13 +24,8 @@ module.exports = (sequelize, DataTypes) => {
             User.belongsToMany(models.TypeOfWork, {
                 through: "UserTypeOfWorks"
             }),
-                User.belongsToMany(models.Tag, {
-                    through: "UserTags"
-                }),
-
                 User.hasMany(models.NotificationUser),
-                User.hasOne(models.Candidate),
-                User.hasMany(models.UserTag)
+                User.hasOne(models.Candidate)
         }
     };
     User.init({

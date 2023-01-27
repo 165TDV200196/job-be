@@ -4,104 +4,132 @@ var Work = require('../models').Work;
 var User = require('../models').User;
 
 exports.create = (req, res) => {
-  WorkApply.bulkCreate(req.body)
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
+    WorkApply.bulkCreate(req.body)
+        .then((data) => {
+            res.json({ data: data });
+        })
+        .catch((er) => {
+            throw er;
+        });
 };
 exports.findall = (req, res) => {
-  WorkApply.findAll()
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
+    WorkApply.findAll()
+        .then((data) => {
+            res.json({ data: data });
+        })
+        .catch((er) => {
+            throw er;
+        });
 };
 exports.findone = (req, res) => {
-  WorkApply.findOne({ where: { id: req.params.id } })
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
+    WorkApply.findOne({ where: { id: req.params.id } })
+        .then((data) => {
+            res.json({ data: data });
+        })
+        .catch((er) => {
+            throw er;
+        });
 };
 exports.delete = (req, res) => {
-  WorkApply.destroy({ where: { userId: req.params.id } })
-    .then((data) => {
-      res.json({ data: data });
-    })
-    .catch((er) => {
-      throw er;
-    });
+    WorkApply.destroy({ where: { userId: req.query.userId, workId: req.query.workId } })
+        .then((data) => {
+            res.json({ data: data });
+        })
+        .catch((er) => {
+            throw er;
+        });
 };
 
 exports.update = (req, res) => {
-  WorkApply.update(req.body, {
-    where: { userId: req.body.userId, workId: req.body.workId },
-  })
-    .then((data) => {
-      res.json({ data: data });
+    WorkApply.update(req.body, {
+        where: { userId: req.body.userId, workId: req.body.workId },
     })
-    .catch((er) => {
-      throw er;
-    });
+        .then((data) => {
+            res.json({ data: data });
+        })
+        .catch((er) => {
+            throw er;
+        });
 };
+
 exports.checkWorkApply = (req, res) => {
-  Company.findOne({
-    where: { id: req.params.id },
-    attributes: ['name', 'avatar'],
-    include: [
-      {
-        model: Work,
-        attributes: ['id', 'name'],
+    Company.findOne({
+        where: { id: req.params.id },
+        attributes: ['name', 'avatar'],
         include: [
-          {
-            model: User,
-            as: 'workapply2',
-            attributes: [
-              'id',
-              'avatar',
-              'name',
-              'address',
-              'phone',
-              'male',
-              'email',
-            ],
-            through: { attributes: ['link', 'message', 'sechedule'] },
-          },
+            {
+                model: Work,
+                attributes: ['id', 'name'],
+                where: { censorship: 1 },
+                include: [
+                    {
+                        model: User,
+                        as: 'workapply2',
+                        attributes: [
+                            'id',
+                            'avatar',
+                            'name',
+                            'address',
+                            'phone',
+                            'male',
+                            'email',
+                        ],
+                        through: { attributes: ['link', 'message', 'sechedule', 'statusActive'] },
+                    },
+
+                ],
+            },
         ],
-      },
-    ],
-  })
-    .then((data) => {
-      res.json({ data: data });
     })
-    .catch((er) => {
-      throw er;
-    });
+        .then((data) => {
+            res.json({ data: data });
+        })
+        .catch((er) => {
+            throw er;
+        });
 };
+
 exports.checkUserApply = (req, res) => {
-  User.findOne({
-    where: { id: req.params.id },
-    attributes: ['id'],
-    include: [
-      {
-        model: Work,
-        as: 'workapply',
-        attributes: ['id', 'name', 'price1', 'price2', 'address', 'dealtime'],
-        include: [{ model: Company, attributes: ['name', 'avatar'] }],
-      },
-    ],
-  })
-    .then((data) => {
-      res.json({ data: data });
+    User.findOne({
+        where: { id: req.params.id },
+        attributes: ['id',],
+        include: [
+            {
+                model: Work,
+                as: 'workapply',
+                attributes: ['id', 'name', 'price1', 'price2', 'address', 'dealtime',],
+                include: [{ model: Company, attributes: ['name', 'avatar'] }],
+                through: { attributes: ['statusActive'] },
+            },
+        ],
     })
-    .catch((er) => {
-      throw er;
-    });
+        .then((data) => {
+            res.json({ data: data });
+        })
+        .catch((er) => {
+            throw er;
+        });
 };
+
+
+
+// exports.checkUserApply = (req, res) => {
+//     User.findOne({
+//         where: { id: req.params.id },
+//         attributes: ['id'],
+//         include: [
+//             {
+//                 model: Work,
+//                 as: 'workapply',
+//                 attributes: ['id', 'name', 'price1', 'price2', 'address', 'dealtime'],
+//                 include: [{ model: Company, attributes: ['name', 'avatar'] }],
+//             },
+//         ],
+//     })
+//         .then((data) => {
+//             res.json({ data: data });
+//         })
+//         .catch((er) => {
+//             throw er;
+//         });
+// };

@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
             phone: DataTypes.STRING,
             price1: DataTypes.INTEGER,
             price2: DataTypes.INTEGER,
-            request: DataTypes.STRING,
+            quantity: DataTypes.INTEGER,
             interest: DataTypes.STRING,
             dealtime: DataTypes.STRING,
             nature: DataTypes.STRING,

@@ -105,12 +105,67 @@ exports.findall = (req, res) => {
     }
   }
 };
+
+const checkSalary = (data, type = 0) => {
+  if (type == 1) {
+    // <= 5
+    return data.filter((x) => x.price1 <= 5);
+  } else if (type == 2) {
+    // 5-10
+    return data.filter(
+      (x) =>
+        (x.price1 >= 5 && x.price1 <= 10) || (x.price2 >= 5 && x.price2 <= 10),
+    );
+  } else if (type == 3) {
+    // 10-15
+    return data.filter(
+      (x) =>
+        (x.price1 >= 10 && x.price1 <= 15) ||
+        (x.price2 >= 10 && x.price2 <= 15),
+    );
+  } else if (type == 4) {
+    // > 15
+    return data.filter((x) => x.price1 > 15 || x.price2 > 15);
+  } else {
+    return data;
+  }
+};
+
+const checkExprience = (data, type = 0) => {
+  if (type == 0) {
+    return data;
+  } else if (type == 1) {
+    return data.filter((x) =>
+      x.exprience.toLocaleLowerCase().includes('không'),
+    );
+  } else if (type == 2) {
+    return data.filter((x) =>
+      ['1 ', '2 ', '3 '].some((y) => x.exprience.includes(y)),
+    );
+  } else if (type == 3) {
+    return data.filter((x) =>
+      ['3 ', '4 ', '5 '].some((y) => x.exprience.includes(y)),
+    );
+  } else if (type == 4) {
+    return data.filter((x) =>
+      ['5 ', '6 ', '7 ', '8 ', '9 ', '10 '].some((y) =>
+        x.exprience.includes(y),
+      ),
+    );
+  } else {
+    return data;
+  }
+};
+
 exports.search = (req, res) => {
   var address = req.query.address || '';
   var status = req.query.status || '';
   var name = req.query.name || '';
   var typeWordId = req.query.typeWordId || '';
   var nature = req.query.nature === '0' ? '' : req.query.nature;
+  var salary = req.query.salary;
+  var exp = req.query.exp;
+
   Work.findAndCountAll({
     where: {
       nature: { [Op.like]: `%${nature}%` },
@@ -127,6 +182,7 @@ exports.search = (req, res) => {
       'price1',
       'price2',
       'dealtime',
+      'exprience',
     ],
     include: [
       { model: Company, attributes: ['name', 'id', 'avatar'] },
@@ -134,7 +190,13 @@ exports.search = (req, res) => {
     ],
   })
     .then((data) => {
-      res.json({ data: data });
+      const newData = checkExprience(checkSalary(data.rows, salary), exp);
+      res.json({
+        data: {
+          count: newData.length,
+          rows: newData,
+        },
+      });
     })
     .catch((er) => {
       res.json({ data: er });

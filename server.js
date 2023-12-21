@@ -13,7 +13,6 @@ require('./routes/loginCompany')(app);
 require('./routes/loginUser')(app);
 require('./routes/LoginAdmin')(app);
 require('./routes/SendMail')(app);
-require('./routes/Company')(app);
 require('./routes/CheckCompany')(app);
 require('./routes/Work')(app);
 require('./routes/User')(app);
